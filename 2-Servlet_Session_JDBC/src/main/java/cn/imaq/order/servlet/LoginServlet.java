@@ -2,6 +2,7 @@ package cn.imaq.order.servlet;
 
 import cn.imaq.order.data.UserDAO;
 import cn.imaq.order.model.User;
+import cn.imaq.order.util.UTF8Writer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,15 +19,14 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=utf-8");
-        resp.getOutputStream().print(
+        UTF8Writer.write(resp,
                 "<!doctype html><html><head><title>Login</title></head><body>" +
-                        "<h2>Login</h2>" +
+                        "<h2>用户登录</h2>" +
                         "<form method=\"post\">" +
-                        "Username: <input name=\"username\"><br>" +
-                        "Password: <input type=\"password\" name=\"password\"><br>" +
-                        "<button type=\"submit\">Login</button>" +
-                        "</form>" +
-                        "</body></html>"
+                        "用户名: <input name=\"username\"><br>" +
+                        "密码: <input type=\"password\" name=\"password\"><br>" +
+                        "<button type=\"submit\">登录</button>" +
+                        "</form></body></html>"
         );
     }
 
@@ -43,10 +43,10 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("username", user.getUsername());
                     resp.sendRedirect("/");
                 } else {
-                    showError(resp, "Password incorrect");
+                    showError(resp, "密码错误");
                 }
             } else {
-                showError(resp, "User does not exist");
+                showError(resp, "用户不存在");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,9 +56,9 @@ public class LoginServlet extends HttpServlet {
 
     private void showError(HttpServletResponse resp, String msg) throws IOException {
         resp.setContentType("text/html; charset=utf-8");
-        resp.getOutputStream().print(
+        UTF8Writer.write(resp,
                 "<!doctype html><html><head><title>Login</title></head><body>" +
-                        "<h2>Login failed</h2><p>" + msg + " <a href=\"/login\">Go back</a></p>" +
+                        "<h2>登录失败</h2><p>" + msg + " <a href=\"/login\">返回</a></p>" +
                         "</body></html>"
         );
     }
