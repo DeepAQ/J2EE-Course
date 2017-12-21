@@ -9,18 +9,18 @@ import org.apache.catalina.webresources.StandardRoot;
 
 import java.io.File;
 
-public class Main {
+public class TomcatMain {
     public static void main(String[] args) throws Exception {
         Tomcat tomcat = new Tomcat();
         tomcat.getHost().setAppBase(".");
         tomcat.enableNaming();
 
         Context ctx = tomcat.addWebapp("", ".");
-        ctx.setConfigFile(Main.class.getClassLoader().getResource("META-INF/context.xml"));
+        ctx.setConfigFile(TomcatMain.class.getClassLoader().getResource("META-INF/context.xml"));
 
         // workaround for Tomcat 9.0
         WebResourceRoot res = new StandardRoot(ctx);
-        File classPath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+        File classPath = new File(TomcatMain.class.getProtectionDomain().getCodeSource().getLocation().toURI());
         if (classPath.isDirectory()) {
             res.addPreResources(new DirResourceSet(res, "/WEB-INF/classes", classPath.getAbsolutePath(), "/"));
         } else {

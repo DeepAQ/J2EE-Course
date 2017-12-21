@@ -1,27 +1,26 @@
 package cn.imaq.order.servlet;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
+import cn.imaq.order.data.UserDAO;
+import cn.imaq.order.model.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private final UserDAO userDAO = new UserDAO();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=utf-8");
         resp.getOutputStream().print(
                 "<!doctype html><html><head><title>Login</title></head><body>" +
-                        "<h3>Login</h3>" +
+                        "<h2>Login</h2>" +
                         "<form method=\"post\">" +
                         "Username: <input name=\"username\"><br>" +
                         "Password: <input type=\"password\" name=\"password\"><br>" +
@@ -36,26 +35,19 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         try {
-            Context context = new InitialContext();
-            DataSource ds = ((DataSource) context.lookup("java:comp/env/jdbc/mydb"));
-            Connection conn = ds.getConnection();
-            PreparedStatement pst = conn.prepareStatement("SELECT * FROM user WHERE username = ?");
-            pst.setString(1, username);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                String realPass = rs.getString("password");
-                if (realPass.equals(password)) {
+            User user = userDAO.getUserByUsername(username);
+            if (user != null) {
+                if (password.equals(user.getPassword())) {
                     HttpSession session = req.getSession(true);
-                    session.setAttribute("userid", rs.getInt("id"));
+                    session.setAttribute("userid", user.getId());
+                    session.setAttribute("username", user.getUsername());
+                    resp.sendRedirect("/");
                 } else {
                     showError(resp, "Password incorrect");
                 }
             } else {
                 showError(resp, "User does not exist");
             }
-            rs.close();
-            pst.close();
-            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
             showError(resp, e.toString());
@@ -66,7 +58,7 @@ public class LoginServlet extends HttpServlet {
         resp.setContentType("text/html; charset=utf-8");
         resp.getOutputStream().print(
                 "<!doctype html><html><head><title>Login</title></head><body>" +
-                        "<p>Login failed: " + msg + " <a href=\"/login\">Go back</a></p>" +
+                        "<h2>Login failed</h2><p>" + msg + " <a href=\"/login\">Go back</a></p>" +
                         "</body></html>"
         );
     }
