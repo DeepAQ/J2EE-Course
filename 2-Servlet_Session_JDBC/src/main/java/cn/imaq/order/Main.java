@@ -13,7 +13,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Tomcat tomcat = new Tomcat();
         tomcat.getHost().setAppBase(".");
+        tomcat.enableNaming();
+
         Context ctx = tomcat.addWebapp("", ".");
+        ctx.setConfigFile(Main.class.getClassLoader().getResource("META-INF/context.xml"));
 
         // workaround for Tomcat 9.0
         WebResourceRoot res = new StandardRoot(ctx);
