@@ -12,10 +12,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class OrderDAO {
-    public List<Order> getOrdersByUserId(Integer userId) throws SQLException, NamingException {
+    public List<Order> getOrdersByUserId(Integer userId, Integer page, Integer pageCount, Boolean oosOnly) throws SQLException, NamingException {
         Connection conn = MyDataSource.getConnection();
-        PreparedStatement pst = conn.prepareStatement("SELECT * FROM orders WHERE userid = ?");
+        PreparedStatement pst;
+        if (oosOnly) {
+            pst = conn.prepareStatement("SELECT * FROM orders WHERE userid = ? AND oos = 1 ORDER BY time DESC LIMIT ?, ?");
+        } else {
+            pst = conn.prepareStatement("SELECT * FROM orders WHERE userid = ? ORDER BY time DESC LIMIT ?, ?");
+        }
         pst.setInt(1, userId);
+        pst.setInt(2, (page - 1) * pageCount);
+        pst.setInt(3, pageCount);
         ResultSet rs = pst.executeQuery();
         List<Order> result = new ArrayList<>();
         while (rs.next()) {
@@ -31,7 +38,21 @@ public class OrderDAO {
         }
         rs.close();
         pst.close();
+        conn.close();
         return Collections.unmodifiableList(result);
+    }
+
+    public Integer getOrderCountByUserId(Integer userId) throws SQLException, NamingException {
+        Connection conn = MyDataSource.getConnection();
+        PreparedStatement pst = conn.prepareStatement("SELECT count(1) FROM orders WHERE userid = ?");
+        pst.setInt(1, userId);
+        ResultSet rs = pst.executeQuery();
+        rs.next();
+        Integer result = rs.getInt(1);
+        rs.close();
+        pst.close();
+        conn.close();
+        return result;
     }
 
     public Integer getOutOfStockCountByUserId(Integer userId) throws SQLException, NamingException {
@@ -43,6 +64,7 @@ public class OrderDAO {
         Integer result = rs.getInt(1);
         rs.close();
         pst.close();
+        conn.close();
         return result;
     }
 }

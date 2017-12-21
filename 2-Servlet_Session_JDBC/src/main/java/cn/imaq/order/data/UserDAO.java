@@ -24,6 +24,7 @@ public class UserDAO {
         }
         rs.close();
         pst.close();
+        conn.close();
         return result;
     }
 }

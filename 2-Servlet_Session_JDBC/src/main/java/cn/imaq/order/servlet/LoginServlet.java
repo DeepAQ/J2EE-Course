@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=utf-8");
         UTF8Writer.write(resp,
-                "<!doctype html><html><head><title>Login</title></head><body>" +
+                "<!doctype html><html><head><title>订单查询系统</title></head><body>" +
                         "<h2>用户登录</h2>" +
                         "<form method=\"post\">" +
                         "用户名: <input name=\"username\"><br>" +
