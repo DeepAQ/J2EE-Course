@@ -12,8 +12,6 @@ import java.io.IOException;
 public class SessionFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // make sure the session is created
-        request.getSession(true).setMaxInactiveInterval(60);
         chain.doFilter(request, response);
     }
 }

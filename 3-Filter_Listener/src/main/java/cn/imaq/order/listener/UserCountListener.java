@@ -22,6 +22,7 @@ public class UserCountListener implements HttpSessionListener, HttpSessionAttrib
     public void sessionCreated(HttpSessionEvent se) {
         System.out.println("sessionCreated");
         onlineCount.getAndIncrement();
+        se.getSession().setMaxInactiveInterval(60);
     }
 
     @Override

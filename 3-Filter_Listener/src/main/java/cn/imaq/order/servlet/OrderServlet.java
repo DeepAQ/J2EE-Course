@@ -22,9 +22,9 @@ public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(true);
         UTF8Writer.write(resp, "<!doctype html><html><head><title>订单查询系统</title></head><body>" +
                 "<h2>订单查询系统</h2><p>" + UserCountListener.getUserCounts() + "</p>");
-        HttpSession session = req.getSession(true);
         if (session.getAttribute("userid") == null) {
             UTF8Writer.write(resp, "<p>当前未登录，<a href=\"/login\">点击登录</a></p>");
         } else {
