@@ -2,9 +2,10 @@ package cn.imaq.order.model.dto;
 
 import cn.imaq.order.model.Order;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class OrderDTO {
+public class OrderDTO implements Serializable {
     private int orderCount;
 
     private int outOfStockCount;

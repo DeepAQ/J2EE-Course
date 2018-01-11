@@ -1,6 +1,8 @@
 package cn.imaq.order.model;
 
-public class ResultMessage<T> {
+import java.io.Serializable;
+
+public class ResultMessage<T> implements Serializable {
     private boolean success;
 
     private T result;

@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private UserService userService = EJBFactory.getEJB("ejb:/j2ee-order-ejb-1.0-SNAPSHOT//UserServiceBean!cn.imaq.order.service.UserService");
+    private UserService userService = EJBFactory.getEJB("ejb:/j2ee-order-ejb-1.0-SNAPSHOT/UserServiceBean!cn.imaq.order.service.UserService");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

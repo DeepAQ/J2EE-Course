@@ -1,6 +1,8 @@
 package cn.imaq.order.model;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
     private Integer id;
 
     private Integer userId;

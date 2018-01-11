@@ -1,15 +1,16 @@
 package cn.imaq.order.data;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MyDataSource {
-    public static Connection getConnection() throws NamingException, SQLException {
-        Context context = new InitialContext();
-        return ((DataSource) context.lookup("java:comp/env/jdbc/mydb")).getConnection();
+    public static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/j2ee?characterEncoding=UTF8", "j2ee", "j2ee");
     }
 }

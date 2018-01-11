@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/")
 public class OrderServlet extends HttpServlet {
-    private OrderService orderService = EJBFactory.getEJB("ejb:/j2ee-order-ejb-1.0-SNAPSHOT//OrderServiceBean!cn.imaq.order.service.OrderService");
+    private OrderService orderService = EJBFactory.getEJB("ejb:/j2ee-order-ejb-1.0-SNAPSHOT/OrderServiceBean!cn.imaq.order.service.OrderService");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

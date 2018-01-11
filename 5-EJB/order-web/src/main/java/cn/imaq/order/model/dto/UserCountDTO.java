@@ -1,6 +1,8 @@
 package cn.imaq.order.model.dto;
 
-public class UserCountDTO {
+import java.io.Serializable;
+
+public class UserCountDTO implements Serializable {
     private int onlineCount;
 
     private int loginCount;
