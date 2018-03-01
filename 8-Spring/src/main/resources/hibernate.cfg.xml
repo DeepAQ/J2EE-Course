@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
+    <session-factory>
+        <property name="hibernate.connection.driver_class">
+            com.mysql.jdbc.Driver
+        </property>
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost:3306/j2ee?characterEncoding=UTF8
+        </property>
+        <property name="hibernate.connection.username">
+            j2ee
+        </property>
+        <property name="hibernate.connection.password">
+            j2ee
+        </property>
+
+        <mapping class="cn.imaq.order.model.User"/>
+        <mapping class="cn.imaq.order.model.Order"/>
+    </session-factory>
+</hibernate-configuration>
